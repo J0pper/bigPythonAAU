@@ -1,7 +1,9 @@
 import pygame as pg
+from pygame.key import ScancodeWrapper
 
 pg.init()
-mainSurface: pg.surface = pg.display.set_mode((1920, 1080), pg.FULLSCREEN, vsync=1)
+#mainSurface: pg.surface = pg.display.set_mode((1920, 1080), pg.FULLSCREEN)
+mainSurface: pg.surface = pg.display.set_mode((720, 480))
 
 
 def main():
@@ -14,9 +16,15 @@ def main():
                 return
 
         mainSurface.fill((255, 0, 0))
+        move_pos()
         pg.display.flip()
 
 
+def move_pos():
+    keys = pg.key.get_pressed()
+    direction: pg.Vector2 = pg.Vector2(-1 * int(keys[pg.K_a]) + int(keys[pg.K_d]),
+                                       -1 * int(keys[pg.K_w]) + int(keys[pg.K_s]))
+    print(direction)
 
 if __name__ == '__main__':
     main()
