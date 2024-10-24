@@ -1,9 +1,4 @@
 import pygame as pg
-from pygame.key import ScancodeWrapper
-
-pg.init()
-#mainSurface: pg.surface = pg.display.set_mode((1920, 1080), pg.FULLSCREEN)
-mainSurface: pg.surface = pg.display.set_mode((720, 480))
 
 
 def main():
@@ -26,5 +21,10 @@ def move_pos():
                                        -1 * int(keys[pg.K_w]) + int(keys[pg.K_s]))
     print(direction)
 
+
 if __name__ == '__main__':
+    pg.init()
+    # mainSurface: pg.surface = pg.display.set_mode((1920, 1080), pg.FULLSCREEN)
+    mainSurface: pg.surface = pg.display.set_mode((720, 480))
+
     main()
