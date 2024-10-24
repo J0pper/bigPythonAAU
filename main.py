@@ -28,3 +28,4 @@ if __name__ == '__main__':
     mainSurface: pg.surface = pg.display.set_mode((720, 480))
 
     main()
+    pg.quit()
