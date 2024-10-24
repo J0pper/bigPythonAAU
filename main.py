@@ -1,5 +1,6 @@
 import pygame as pg
 import time
+from gameobject import Projectile, Player
 import random
 from gameobject import Projectile, GameObject
 
@@ -46,6 +47,7 @@ def get_projectile_params() -> ((float, float), pg.Vector2):
 
 def main():
     Projectile(*get_projectile_params())
+    player = Player(pg.Vector2(*mainSurface.get_size()) / 2)
     startTime = time.time()
     prevTime = startTime
     spawnerTimer = 0
@@ -69,23 +71,17 @@ def main():
             elif event.type == pg.QUIT:
                 return
 
+        player.update_pos()
         for proj in Projectile.projectiles:
-            proj.updatePos()
+            proj.update_pos()
 
         # Rendering step
         mainSurface.fill((0, 255, 0))
+        player.draw(mainSurface)
         for obj in GameObject.gameObjects:
             obj.draw(mainSurface)
 
-        move_pos()
         pg.display.flip()
-
-
-def move_pos():
-    keys = pg.key.get_pressed()
-    direction: pg.Vector2 = pg.Vector2(-1 * int(keys[pg.K_a]) + int(keys[pg.K_d]),
-                                       -1 * int(keys[pg.K_w]) + int(keys[pg.K_s]))
-    # print(direction)
 
 
 if __name__ == '__main__':

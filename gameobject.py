@@ -44,6 +44,27 @@ class Projectile(GameObject):
     def __del__(self):
         Projectile.projectiles.remove(self)
 
-    def updatePos(self):
+    def update_pos(self):
         moveBy = self.__dir * Projectile.speed
+        self.move_pos(moveBy.x, moveBy.y)
+
+
+class Player(GameObject):
+    size: float = 10
+    speed: float = 0.5
+
+    def __init__(self, pos: (int, int)):
+        super().__init__(pos, (Player.size, Player.size), pg.Color(0, 0, 255))
+        self.__dir: pg.Vector2 = pg.Vector2(0, 0)
+        self.update_dir()
+
+
+    def update_dir(self):
+        keys = pg.key.get_pressed()
+        self.__dir: pg.Vector2 = pg.Vector2(-1 * int(keys[pg.K_a]) + int(keys[pg.K_d]),
+                                            -1 * int(keys[pg.K_w]) + int(keys[pg.K_s]))
+
+    def update_pos(self):
+        self.update_dir()
+        moveBy = self.__dir * Player.speed
         self.move_pos(moveBy.x, moveBy.y)
