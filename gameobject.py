@@ -1,10 +1,8 @@
 import pygame as pg
 
-import gameobject
-
 
 class GameObject:
-    gameObjects: list[gameobject.GameObject] = []
+    gameObjects: list = []
 
     def __init__(self, rect: pg.Rect, color: pg.Color):
         self.__rect: pg.Rect = rect
@@ -31,10 +29,10 @@ class GameObject:
 class Projectile(GameObject):
     size: int = 6
     speed: int = 2
-    projectiles: list[gameobject.Projectile] = []
+    projectiles: list = []
 
     def __init__(self, pos: (int, int), direction: pg.Vector2):
-        super().__init__(pg.Rect(pos[0], pos[1], Projectile.size, Projectile.size))
+        super().__init__(pg.Rect(pos[0], pos[1], Projectile.size, Projectile.size), pg.Color(255, 0, 0))
         self.__dir: pg.Vector2 = direction
         Projectile.projectiles.append(self)
 
