@@ -1,8 +1,15 @@
 import pygame as pg
+import time
+from gameobject import Projectile
 
 
 def main():
+    projectile = Projectile((100, 100), pg.Vector2(0, 1))
+    prevTime = time.time()
+
     while True:
+        deltaTime = time.time() - prevTime
+
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
@@ -10,7 +17,15 @@ def main():
             elif event.type == pg.QUIT:
                 return
 
+        Projectile.speed = 5 * deltaTime
+        projectile.updatePos()
+
+        prevTime = time.time()
+
+        # Rendering step
         mainSurface.fill((255, 0, 0))
+        projectile.draw(mainSurface)
+
         move_pos()
         pg.display.flip()
 
