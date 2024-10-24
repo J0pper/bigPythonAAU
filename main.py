@@ -1,14 +1,20 @@
 import pygame as pg
 import time
+import threading as thread
 from gameobject import Projectile
 
 
 def main():
     projectile = Projectile((100, 100), pg.Vector2(0, 1))
-    prevTime = time.time()
+    startTime = time.time()
+    prevTime = startTime
 
     while True:
         deltaTime = time.time() - prevTime
+        prevTime = time.time()
+
+        Projectile.speed = (25 + 2 * (time.time() - startTime)) * deltaTime
+        print(Projectile.speed)
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -17,13 +23,10 @@ def main():
             elif event.type == pg.QUIT:
                 return
 
-        Projectile.speed = 5 * deltaTime
         projectile.updatePos()
 
-        prevTime = time.time()
-
         # Rendering step
-        mainSurface.fill((255, 0, 0))
+        mainSurface.fill((0, 255, 0))
         projectile.draw(mainSurface)
 
         move_pos()
@@ -34,7 +37,7 @@ def move_pos():
     keys = pg.key.get_pressed()
     direction: pg.Vector2 = pg.Vector2(-1 * int(keys[pg.K_a]) + int(keys[pg.K_d]),
                                        -1 * int(keys[pg.K_w]) + int(keys[pg.K_s]))
-    print(direction)
+    # print(direction)
 
 
 if __name__ == '__main__':

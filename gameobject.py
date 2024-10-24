@@ -2,10 +2,11 @@ import pygame as pg
 
 
 class GameObject:
-    gameObjects: list = []
+    gameObjects: list['GameObject'] = []
 
-    def __init__(self, rect: pg.Rect, color: pg.Color):
-        self.__rect: pg.Rect = rect
+    def __init__(self, pos: (float, float), size: (float, float), color: pg.Color):
+        self.__pos: tuple[float, float] = pos
+        self.__size: tuple[float, float] = size
         self.__color: pg.Color = color
 
         GameObject.gameObjects.append(self)
@@ -13,26 +14,30 @@ class GameObject:
     def __del__(self):
         GameObject.gameObjects.remove(self)
 
+    def _get_rect(self) -> pg.Rect:
+        return pg.Rect(*self.__pos, *self.__size)
+
     def draw(self, surface: pg.Surface):
-        pg.draw.rect(surface, self.__color, self.__rect)
+        pg.draw.rect(surface, self.__color, self._get_rect())
+        # print(self.__rect)
 
     def move_pos(self, x, y):
-        self.__rect.move_ip(x, y)
+        self.__pos = self.__pos[0] + x, self.__pos[1] + y
 
     def set_pos(self, x, y):
-        self.__rect.update(x, y, self.__rect.w, self.__rect.h)
+        self.__pos = (x, y)
 
-    def collides_with(self, others: list[GameObject]) -> bool:
-        return self.__rect.collidelist([other.__rect for other in others]) != 0
+    def collides_with(self, others: list['GameObject']) -> bool:
+        return pg.Rect.collidelist(self._get_rect(), [other._get_rect() for other in others]) != 0
 
 
 class Projectile(GameObject):
-    size: int = 6
-    speed: int = 2
-    projectiles: list = []
+    size: float = 6
+    speed: float = 2
+    projectiles: list['Projectile'] = []
 
     def __init__(self, pos: (int, int), direction: pg.Vector2):
-        super().__init__(pg.Rect(pos[0], pos[1], Projectile.size, Projectile.size), pg.Color(255, 0, 0))
+        super().__init__(pos, (Projectile.size, Projectile.size), pg.Color(255, 0, 0))
         self.__dir: pg.Vector2 = direction
         Projectile.projectiles.append(self)
 
